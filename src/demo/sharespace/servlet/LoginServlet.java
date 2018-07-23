@@ -59,8 +59,8 @@ public class LoginServlet extends HttpServlet {
 			// 展开结果集数据库
 			while (rs.next()) {
 				// 通过字段检索
-				userid = rs.getString("id_User");
-				String name = rs.getString("name_User");
+				userid = rs.getString("id_User").trim();
+				String name = rs.getString("name_User").trim();		
 				checkSuccess = username.equals(name);
 				break;
 			}
@@ -87,5 +87,4 @@ public class LoginServlet extends HttpServlet {
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 	}
-
 }

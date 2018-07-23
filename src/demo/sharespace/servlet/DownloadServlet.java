@@ -3,6 +3,8 @@ package demo.sharespace.servlet;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -56,8 +58,8 @@ public class DownloadServlet extends HttpServlet {
 			// 展开结果集数据库
 			while (rs.next()) {
 				// 通过字段检索
-				fileName = rs.getString("name_File");
-				filePath = rs.getString("filepath");
+				fileName = rs.getString("name_File").trim();
+				filePath = rs.getString("filepath").trim();
 				break;
 			}
 
@@ -68,19 +70,40 @@ public class DownloadServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		System.out.println(filePath);
 		File file = new File(filePath);
 		if (file.exists()) {
-			FileInputStream fis = new FileInputStream(file);
-			fileName = URLEncoder.encode(fileName, "UTF-8");
-			byte[] bs = new byte[fis.available()];
-			fis.read(bs);
-			response.setCharacterEncoding("UTF-8");
-			response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-			ServletOutputStream os = response.getOutputStream();
-			os.write(bs);
-			//os.flush();
-			os.close();
-			fis.close();
+			// 以流的形式读入文件
+			InputStream in = new FileInputStream(file);
+
+			// 下载转码
+			String userAgent = request.getHeader("user-agent").toLowerCase();
+			if (userAgent.contains("msie") || userAgent.contains("edge") || userAgent.contains("trident")) {
+				// win10 ie edge 浏览器 和其他系统的ie
+				fileName = URLEncoder.encode(fileName, "UTF-8");
+			} else {
+				fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+			}
+
+			// 使用浏览器进行下载
+			response.addHeader("Content-type", "appllication/octet-stream");
+			response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
+
+			// 定义流输出
+			OutputStream out = response.getOutputStream();
+
+			// 定义临时缓冲区
+			byte[] buffer = new byte[1024];
+			int len = -1;
+
+			// 将流中的数据读出
+			while ((len = in.read(buffer)) != -1) {
+				out.write(buffer, 0, len);
+			}
+
+			// 关闭流
+			out.close();
+			in.close();
 		} else {
 			System.out.println("文件不存在：" + filePath);
 		}

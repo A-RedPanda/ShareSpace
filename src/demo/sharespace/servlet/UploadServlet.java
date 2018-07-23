@@ -115,7 +115,7 @@ public class UploadServlet extends HttpServlet {
 					// 处理不在表单中的字段
 					if (!item.isFormField()) {
 						String fileName = new File(item.getName()).getName();
-						String uuid = UUID.randomUUID().toString();
+						String uuid = String.format("%010d", Math.abs(UUID.randomUUID().toString().hashCode()));
 						String fileDirStr = uploadPath + File.separator + uuid;
 						File fileDir = new File(fileDirStr);
 						if (!fileDir.exists()) {

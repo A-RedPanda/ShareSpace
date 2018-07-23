@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 
 import demo.sharespace.util.DbUtils;
 import demo.sharespace.util.StringUtils;
@@ -30,7 +32,6 @@ public class RegisterServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	int id = 2016118000;
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -62,13 +63,13 @@ public class RegisterServlet extends HttpServlet {
 			Statement statement = null;
 			try {
 				statement = conn.createStatement();
+				String id =String.format("%010d", Math.abs(UUID.randomUUID().toString().hashCode()));
 				String sql = "insert into  User_Tab  values ('"+ id +"','"+ username + "','" + password + "')";
-				id++;
-				System.out.println(sql+"this is a sql   "+id);
 				statement.execute(sql);
 
 				session.setAttribute("login_flag", "1");
 				session.setAttribute("username", username);
+				session.setAttribute("userid", id);
 				response.sendRedirect("/ShareSpace/home.jsp");
 				return;
 			} catch (SQLException e) {
@@ -82,8 +83,9 @@ public class RegisterServlet extends HttpServlet {
 			}
 
 			request.setAttribute("register_flag", "-2");
-			request.getRequestDispatcher("/register.jsp").forward(request, response);
+			//request.getRequestDispatcher("/register.jsp").forward(request, response);
 		}
 	}
+	
 
 }

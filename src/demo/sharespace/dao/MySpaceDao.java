@@ -24,10 +24,9 @@ public class MySpaceDao {
 			while (rs.next()) {
 				 fileBean = new FileBean();
 				 // 通过字段检索
-				 fileBean.setFileId(rs.getString("id_File"));
-				 fileBean.setFileName(rs.getString("name_File"));
-				 fileBean.setFilePath(rs.getString("filepath"));
-				 
+				 fileBean.setFileId(rs.getString("id_File").trim());
+				 fileBean.setFileName(rs.getString("name_File").trim());
+				 fileBean.setFilePath(rs.getString("filepath").trim());
 				 fileBeans.add(fileBean);
 			}
 
