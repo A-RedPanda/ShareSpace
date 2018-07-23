@@ -70,7 +70,6 @@ public class DownloadServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		System.out.println(filePath);
 		File file = new File(filePath);
 		if (file.exists()) {
 			// 以流的形式读入文件

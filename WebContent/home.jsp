@@ -61,6 +61,7 @@ for(FileBean file : fileList){
 <td><%=file.getFileName() %></td>
 <td><%=file.getFilePath() %></td>
 <% out.println("<td><a href=\"/ShareSpace/DownloadServlet?fileId=" + file.getFileId() + "\">下载</a></td>"); %>
+<% out.println("<td><a href=\"/ShareSpace/FileDelete?fileId=" + file.getFileId() + "\">删除</a></td>"); %>
 </tr>
 <%
 }

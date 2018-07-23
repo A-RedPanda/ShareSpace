@@ -116,13 +116,13 @@ public class UploadServlet extends HttpServlet {
 					if (!item.isFormField()) {
 						String fileName = new File(item.getName()).getName();
 						String uuid = String.format("%010d", Math.abs(UUID.randomUUID().toString().hashCode()));
-						String fileDirStr = uploadPath + File.separator + uuid;
+						String fileDirStr = uploadPath + File.separator + RequestUtils.getUserId(request);
 						File fileDir = new File(fileDirStr);
 						if (!fileDir.exists()) {
 							fileDir.mkdir();
 						}
 						
-						String filePath = uploadPath + File.separator + uuid + File.separator + fileName;
+						String filePath = uploadPath + File.separator + RequestUtils.getUserId(request) + File.separator + fileName;
 						File storeFile = new File(filePath);
 						
 						// 在控制台输出文件的上传路径
