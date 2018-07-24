@@ -43,6 +43,13 @@ if("1".equals(session.getAttribute("login_flag"))){
 <a id="upload" href="/ShareSpace/upload.jsp">上传</a>
 欢迎,<%=session.getAttribute("username") %>
 <a id="logout" href="/ShareSpace/LogoutServlet">登出</a>
+
+<!-- 新增查询 -->
+<form method="get"   action="SearchServlet" >
+<input type="text" name="content" value="输入文件id或文件名"/>
+<input type="submit" value="查询" />
+</form>
+
 </div>
 <%
 MySpaceDao mySpaceDao = new MySpaceDao();
