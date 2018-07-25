@@ -9,6 +9,7 @@ import java.util.List;
 import demo.sharespace.bean.FileBean;
 import demo.sharespace.util.DbUtils;
 
+//按用户id查找用户拥有的文件
 public class MySpaceDao {
 
 	public List<FileBean> getMyFileList( String userId) {
